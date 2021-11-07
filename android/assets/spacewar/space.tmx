@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="15" height="300" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="1">
+ <tileset firstgid="1" name="tiles_packed" tilewidth="16" tileheight="16" tilecount="120" columns="12">
+  <image source="tiles_packed.png" width="192" height="160"/>
+ </tileset>
+ <layer id="1" name="Tile Layer 1" width="15" height="300">
+  <data encoding="base64" compression="zlib">
+   eJztmLFuwzAMRPUjyegW8OQoaxKvXjpnbJC96Cf1U/xppYEIIBjKktOgReE33GSdKZ98PNoxhHGrsBO0DvaCjeAgiBnMce3aF4Mmw3111gqChqwJrYPGrJsQDfYZ7s5ZmyAahE2Bu1XQvJ/UnfARwlcNd3D2PFf3KDgZHEKdVh40b7pXv4Cb26s9T+/cc3udtOmUFt6zeNcaR1OPmzTrTc3EPQsulRo2pt65Uv/Em57zesOb4LOCu1PcuLCu9+54ejwJbp94BLK38ZTBscBNPe2selpX6IOaK2cyytmM1xsSN9cHc3WHSl7iXsye9V61Hrm6g+I25nrKBo+brnWOPjofLNf2f/uciXt44NzjTN2S/lHVrX139F71PbSmcxkqvf89l721+atrk/vkPrlP7pP75D65T+5bLrlP7ntcD+Q+uU/uk/v2GrlP7pP75L4Hcp/cn4HbJx5B7/Rscp/cr9Gf3P/93Mf7eB/vr9P7zPzM/Mz865z58T7ex/t4H+/jfby/Hu+3fNMV9/yfv+lqz2jJO8D/nHs9cnX5n4P3/8r7zHXMdcx165zr8D7ex/vr9H67YD4roXfmNWZ+Zv4a/aOqy8zPzJ+45D65T+4/P/e/AYKOFi4=
+  </data>
+ </layer>
+ <objectgroup id="2" name="对象层 1"/>
+</map>

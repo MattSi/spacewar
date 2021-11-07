@@ -1,4 +1,4 @@
-package org.propig.game.spacewar;
+package org.propig.game.spacewar.unit;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -9,7 +9,8 @@ public class Spaceship extends BaseActor {
     private Thrusters thrusters;
     private ThrusterEffect thrusterEffect;
     private Shield shield;
-    public int shieldPower;
+    public int shieldPower = 100;
+
     public Spaceship(float x, float y, Stage s) {
         super(x, y, s);
 
@@ -31,7 +32,6 @@ public class Spaceship extends BaseActor {
 
         addActor(shield);
         shield.centerAtPosition(getWidth()/2, getHeight()/2);
-        shieldPower=200;
 
         thrusterEffect = new ThrusterEffect();
         thrusterEffect.setPosition(0, 32);
@@ -65,12 +65,15 @@ public class Spaceship extends BaseActor {
             accelerationAtAngle(270);
         }
 
-        shield.setOpacity(shieldPower/200f);
+        shield.setOpacity(shieldPower/100f);
         if(shieldPower < 0)
             shield.setVisible(false);
 
         applyPhysics(delta);
         wrapAroundWorld();
+        alignCamera();
+
+
     }
 
     public void warp(){

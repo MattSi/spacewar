@@ -1,4 +1,4 @@
-package org.propig.game.spacewar;
+package org.propig.game.spacewar.unit;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;

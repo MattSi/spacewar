@@ -1,8 +1,8 @@
-package org.propig.game.spacewar;
+package org.propig.game.spacewar.unit;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
-public class Explosion extends BaseActor{
+public class Explosion extends BaseActor {
     public Explosion(float x, float y, Stage s) {
         super(x, y, s);
         loadAnimationFromSheet(

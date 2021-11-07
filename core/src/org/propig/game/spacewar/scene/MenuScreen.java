@@ -1,9 +1,12 @@
-package org.propig.game.spacewar;
+package org.propig.game.spacewar.scene;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import org.propig.game.spacewar.BaseGame;
+import org.propig.game.spacewar.SpaceWarGame;
+import org.propig.game.spacewar.unit.BaseActor;
 
 public class MenuScreen extends BaseScreen{
 
@@ -18,7 +21,11 @@ public class MenuScreen extends BaseScreen{
         TextButton startButton = new TextButton("闯关模式", BaseGame.textButtonStyle);
         uiStage.addActor(startButton);
 
-        TextButton optionButton = new TextButton("Options", BaseGame.textButtonStyle);
+        TextButton survivalButton = new TextButton("生存模式", BaseGame.textButtonStyle);
+        uiStage.addActor(survivalButton);
+
+
+        TextButton optionButton = new TextButton("选项", BaseGame.textButtonStyle);
         uiStage.addActor(optionButton);
 
         TextButton quitButton = new TextButton("退出", BaseGame.textButtonStyle);
@@ -27,6 +34,8 @@ public class MenuScreen extends BaseScreen{
         uiTable.add(title).colspan(2);
         uiTable.row();
         uiTable.add(startButton);
+        uiTable.row();
+        uiTable.add(survivalButton);
         uiTable.row();
         uiTable.add(optionButton);
         uiTable.row();

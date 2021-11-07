@@ -6,9 +6,12 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import org.propig.game.spacewar.scene.BaseScreen;
 
 public abstract class BaseGame extends Game {
 
@@ -18,6 +21,7 @@ public abstract class BaseGame extends Game {
     private static BaseGame game;
     public static TextButton.TextButtonStyle textButtonStyle;
     public static Label.LabelStyle labelStyle;
+
 
     /**
      * Called when game is initialized
@@ -29,6 +33,7 @@ public abstract class BaseGame extends Game {
     @Override
     public void create() {
         // prepare for multiple classes/stages/actors to receive discrete input
+
         InputMultiplexer im = new InputMultiplexer();
         Gdx.input.setInputProcessor(im);
 
@@ -43,8 +48,12 @@ public abstract class BaseGame extends Game {
         BitmapFont custFont = new BitmapFont(Gdx.files.internal("spacewar/spacewar.fnt"),
                 Gdx.files.internal("spacewar/spacewar.png"),false);
 
-        textButtonStyle = new TextButton.TextButtonStyle();
+
         Texture buttonTex = new Texture(Gdx.files.internal("spacewar/button.png"));
+        NinePatch buttonPatch =new NinePatch(buttonTex, 24, 24, 24, 24);
+
+        textButtonStyle = new TextButton.TextButtonStyle();
+        textButtonStyle.up = new NinePatchDrawable(buttonPatch);
         textButtonStyle.font = custFont;
 
         labelStyle = new Label.LabelStyle();

@@ -1,4 +1,4 @@
-package org.propig.game.spacewar;
+package org.propig.game.spacewar.unit;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;

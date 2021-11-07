@@ -1,15 +1,19 @@
-package org.propig.game.spacewar;
+package org.propig.game.spacewar.scene;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
+import org.propig.game.spacewar.BaseGame;
+import org.propig.game.spacewar.unit.*;
+import org.propig.game.spacewar.gameconst.DamageConst;
+import org.propig.game.spacewar.gameconst.ScoreConst;
 
 public class LevelScreen extends BaseScreen{
     boolean gameOver;
-    int width;
-    int height;
+    int worldWidth;
+    int worldHeight;
     Spaceship spaceship;
     Label healthLabel;
     Label scoreLabel;
@@ -18,24 +22,28 @@ public class LevelScreen extends BaseScreen{
     int leftRocks;
     int score;
 
+
+
     @Override
     protected void initialize() {
         new Sky(0,0,mainStage);
         new Sky(0, 700, mainStage);
-        BaseActor.setWorldBounds(433,700);
+        new Sky(0, 1400, mainStage);
+        //new TiledActor(0,0, mainStage);
+        BaseActor.setWorldBounds(500,700);
 
         spaceship = new Spaceship(200,100,mainStage);
 
         new Rock(300, 500, mainStage);
-        new Rock(300, 300, mainStage);
-        new Rock(300, 500, mainStage);
-        new Rock(200, 500, mainStage);
-        new Rock(100, 500, mainStage);
-        new Rock(100, 600, mainStage);
-        new Rock(100, 600, mainStage);
-        new Rock(200, 500, mainStage);
+//        new Rock(300, 300, mainStage);
+//        new Rock(300, 500, mainStage);
+//        new Rock(200, 500, mainStage);
+//        new Rock(100, 500, mainStage);
+//        new Rock(100, 600, mainStage);
+//        new Rock(100, 600, mainStage);
+//        new Rock(200, 500, mainStage);
 
-        leftRocks = 50;
+        leftRocks = 0;
 
         healthLabel = new Label(" x " + spaceship.shieldPower, BaseGame.labelStyle);
         healthLabel.setColor(Color.RED);
@@ -75,37 +83,36 @@ public class LevelScreen extends BaseScreen{
             return;
 
 
-        if(BaseActor.getList(mainStage, "org.propig.game.spacewar.Rock").size() < 4 &&
+        if(BaseActor.getList(mainStage, "org.propig.game.spacewar.unit.Rock").size() < 8 &&
         leftRocks > 0) {
-            new Rock(MathUtils.random(0,300), MathUtils.random(400, 680), mainStage);
+            new Rock(MathUtils.random(0,300), MathUtils.random(700, 730), mainStage);
             leftRocks--;
         }
 
-        for(BaseActor rockActor : BaseActor.getList(mainStage,"org.propig.game.spacewar.Rock")){
+        for(BaseActor rockActor : BaseActor.getList(mainStage,"org.propig.game.spacewar.unit.Rock")){
             if(rockActor.overlaps(spaceship)){
-                spaceship.shieldPower -= MathUtils.random(32, 35);
+                spaceship.shieldPower -= DamageConst.RockDamage;
                 if(spaceship.shieldPower <=0){
                     spaceship.shieldPower = 0;
                     Explosion boom = new Explosion(0,0,mainStage);
                     boom.centerAtActor(spaceship);
                     spaceship.remove();
-                    spaceship.setPosition(-1000, -1000);
                     gameOver = true;
                 }else{
                     Explosion boom = new Explosion(0,0,mainStage);
                     boom.centerAtActor(rockActor);
                     rockActor.remove();
-                    score += 60;
+                    score += ScoreConst.CollisionScore;
                 }
             }
 
-            for(BaseActor laserActor : BaseActor.getList(mainStage, "org.propig.game.spacewar.Laser")){
+            for(BaseActor laserActor : BaseActor.getList(mainStage, "org.propig.game.spacewar.unit.Laser")){
                 if(laserActor.overlaps(rockActor)){
                     Explosion boom = new Explosion(0,0,mainStage);
                     boom.centerAtActor(rockActor);
                     laserActor.remove();
                     rockActor.remove();
-                    score += 50;
+                    score += ScoreConst.LazerScore;
                 }
             }
         }
@@ -123,7 +130,7 @@ public class LevelScreen extends BaseScreen{
             spaceship.warp();
         }
         if(keycode == Input.Keys.Z) {
-            if(BaseActor.getList(mainStage, "org.propig.game.spacewar.Laser").size() < 5)
+            if(BaseActor.getList(mainStage, "org.propig.game.spacewar.unit.Laser").size() < 5)
                 spaceship.shoot();
         }
         return false;

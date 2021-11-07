@@ -1,4 +1,4 @@
-package org.propig.game.spacewar;
+package org.propig.game.spacewar.scene;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
@@ -65,8 +65,8 @@ public abstract class BaseScreen implements Screen, InputProcessor {
     }
 
     public void resize(int width, int height){
-        mainStage.getViewport().update(width, height);
-        uiStage.getViewport().update(width, height);
+//        mainStage.getViewport().update(width, height);
+//        uiStage.getViewport().update(width, height);
     }
 
     @Override

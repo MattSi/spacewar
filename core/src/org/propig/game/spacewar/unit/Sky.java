@@ -1,8 +1,10 @@
-package org.propig.game.spacewar;
+package org.propig.game.spacewar.unit;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import org.propig.game.spacewar.unit.BaseActor;
 
-public class Sky extends BaseActor{
+public class Sky extends BaseActor {
 
     public Sky(float x, float y, Stage s) {
         super(x, y, s);
@@ -20,4 +22,6 @@ public class Sky extends BaseActor{
             moveBy(0,  2 * 700);
         }
     }
+
+
 }
