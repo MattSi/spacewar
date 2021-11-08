@@ -41,7 +41,7 @@ public abstract class BaseGame extends Game {
         FreeTypeFontGenerator fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("spacewar/OpenSans.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter fontParameter =
                 new FreeTypeFontGenerator.FreeTypeFontParameter();
-        fontParameter.size = 36;
+        fontParameter.size = 24;
         fontParameter.color = Color.WHITE;
 
         // TODO: fix font and Style;

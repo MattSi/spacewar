@@ -39,10 +39,15 @@ public class BaseActor extends Group
     private float maxSpeed;
     private float deceleration;
 
+
     private Polygon boundaryPolygon;
 
     // stores size of game world for all actors
     private static Rectangle worldBounds;
+    public int health;
+    public int maxHealth;
+
+    protected long spawnTime;
 
     public BaseActor(float x, float y, Stage s)
     {
@@ -66,6 +71,7 @@ public class BaseActor extends Group
         deceleration = 0;
 
         boundaryPolygon = null;
+        spawnTime = System.currentTimeMillis();
     }
 
     public void accelerationAtAngle(float angle){
@@ -174,7 +180,7 @@ public class BaseActor extends Group
      * @return animation created (useful for storing multiple animations)
      */
     public Animation<TextureRegion> loadAnimationFromFiles(String[] fileNames, float frameDuration, boolean loop)
-    { 
+    {
         int fileCount = fileNames.length;
         Array<TextureRegion> textureArray = new Array<>();
 
@@ -599,10 +605,10 @@ public class BaseActor extends Group
         // center camera on actor
         cam.position.set( this.getX() + this.getOriginX(), this.getY() + this.getOriginY(), 0 );
 
-        System.out.printf("%.2f, %.2f, %.2f, %.2f\n",
-                getX(), cam.position.x, cam.viewportWidth/2, worldBounds.width - cam.viewportWidth/2);
+
         // bound camera to layout
-        cam.position.x = MathUtils.clamp(cam.position.x, cam.viewportWidth/2,  worldBounds.width -  cam.viewportWidth/2);
+        float offset = (worldBounds.width-cam.viewportWidth) * (getX() + getOriginX()) / worldBounds.width;
+        cam.position.x = MathUtils.clamp(cam.viewportWidth/2 + offset, cam.viewportWidth/2, worldBounds.width-cam.viewportWidth/2);
         cam.position.y = MathUtils.clamp(cam.position.y, cam.viewportHeight/2, worldBounds.height - cam.viewportHeight/2);
 
 

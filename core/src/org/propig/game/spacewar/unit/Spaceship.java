@@ -3,13 +3,17 @@ package org.propig.game.spacewar.unit;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
-public class Spaceship extends BaseActor {
+public class Spaceship extends BaseActor implements Runnable {
     private Thrusters thrusters;
     private ThrusterEffect thrusterEffect;
     private Shield shield;
-    public int shieldPower = 100;
+    public int shieldPower = 50;
+    public int maxShieldPower = 100;
+    private boolean canWarp = false;
 
     public Spaceship(float x, float y, Stage s) {
         super(x, y, s);
@@ -18,10 +22,12 @@ public class Spaceship extends BaseActor {
         setBoundaryPolygon(8);
 
         setAcceleration(1000);
-        setMaxSpeed(200);
+        setMaxSpeed(300);
         setDeceleration(1000);
         setRotation(90);
         setScale(0.5f);
+        health = 50;
+        maxHealth = 100;
 
         thrusters = new Thrusters(0,0,s);
         addActor(thrusters);
@@ -65,7 +71,7 @@ public class Spaceship extends BaseActor {
             accelerationAtAngle(270);
         }
 
-        shield.setOpacity(shieldPower/100f);
+        shield.setOpacity(shieldPower*1.0f/maxShieldPower);
         if(shieldPower < 0)
             shield.setVisible(false);
 
@@ -73,18 +79,31 @@ public class Spaceship extends BaseActor {
         wrapAroundWorld();
         alignCamera();
 
-
     }
 
     public void warp(){
-        if(getStage() == null)
+        if(getStage() == null  )
             return;
+
+        if(canWarp){
+            return;
+        }
 
         Warp warp1 = new Warp(0,0,getStage());
         warp1.centerAtActor(this);
         setPosition(MathUtils.random(800), MathUtils.random(600));
         Warp warp2 = new Warp(0,0,getStage());
         warp2.centerAtActor(this);
+
+
+        Action pulse = Actions.sequence(
+                Actions.fadeOut(0.2f),
+                Actions.fadeIn(0.2f));
+        addAction(Actions.run(this));
+        addAction(Actions.after(Actions.repeat(7, pulse)));
+        addAction(Actions.after(Actions.run(this)));
+
+
     }
 
     public void shoot(){
@@ -95,5 +114,19 @@ public class Spaceship extends BaseActor {
         laser.centerAtActor(this);
         laser.setRotation(this.getRotation());
         laser.setMotionAngle(getRotation());
+
+    }
+
+    @Override
+    public void run() {
+        if(canWarp){
+            canWarp = false;
+        } else {
+            canWarp = true;
+        }
+    }
+
+    public boolean isInvincible (){
+        return canWarp;
     }
 }

@@ -11,9 +11,8 @@ public class Shield extends BaseActor {
         loadTexture("spacewar/shields.png");
 
         Action pulse = Actions.sequence(
-                Actions.scaleTo(1.05f, 1.05f, 1),
-                Actions.scaleTo(0.95f, 0.95f, 1));
+                Actions.scaleTo(0.8f, 0.8f, 1),
+                Actions.scaleTo(0.65f, 0.65f, 1));
         addAction(Actions.forever(pulse));
-
     }
 }

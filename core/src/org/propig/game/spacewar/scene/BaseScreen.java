@@ -16,6 +16,8 @@ public abstract class BaseScreen implements Screen, InputProcessor {
     protected Stage mainStage;
     protected Stage uiStage;
     protected Table uiTable;
+    protected int worldWidth;
+    protected int worldHeigth;
 
 
     public BaseScreen() {
@@ -26,6 +28,8 @@ public abstract class BaseScreen implements Screen, InputProcessor {
         uiTable.setFillParent(true);
         uiStage.addActor(uiTable);
 
+        worldWidth = 550;
+        worldHeigth = 700;
         initialize();
     }
 

@@ -4,7 +4,9 @@ import com.badlogic.gdx.math.MathUtils;
 
 public class DamageConst {
 
-    public static final int RockDamage = MathUtils.random(16,18);
+    public static final int RockDamage = 16;
 
-    public static final int BulletDamage = MathUtils.random(9,13);
+    public static final int BulletDamage = 11;
+
+    public static final int SpaceshipDamage = 15;
 }

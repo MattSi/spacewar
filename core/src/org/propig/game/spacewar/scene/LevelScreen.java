@@ -12,15 +12,15 @@ import org.propig.game.spacewar.gameconst.ScoreConst;
 
 public class LevelScreen extends BaseScreen{
     boolean gameOver;
-    int worldWidth;
-    int worldHeight;
     Spaceship spaceship;
     Label healthLabel;
+    Label shieldLabel;
     Label scoreLabel;
 
-    ProgressBar progressBar;
     int leftRocks;
     int score;
+    float timeInterval=0;
+    int limit=1;
 
 
 
@@ -29,12 +29,11 @@ public class LevelScreen extends BaseScreen{
         new Sky(0,0,mainStage);
         new Sky(0, 700, mainStage);
         new Sky(0, 1400, mainStage);
-        //new TiledActor(0,0, mainStage);
-        BaseActor.setWorldBounds(500,700);
+        BaseActor.setWorldBounds(worldWidth,worldHeigth);
 
         spaceship = new Spaceship(200,100,mainStage);
 
-        new Rock(300, 500, mainStage);
+        //new Rock(300, 500, mainStage);
 //        new Rock(300, 300, mainStage);
 //        new Rock(300, 500, mainStage);
 //        new Rock(200, 500, mainStage);
@@ -43,19 +42,33 @@ public class LevelScreen extends BaseScreen{
 //        new Rock(100, 600, mainStage);
 //        new Rock(200, 500, mainStage);
 
+//        new Enemy1(100, 800, mainStage);
+//        new Enemy1(150, 800, mainStage);
+//        new Enemy1(200, 800, mainStage);
+
         leftRocks = 0;
 
-        healthLabel = new Label(" x " + spaceship.shieldPower, BaseGame.labelStyle);
+        healthLabel = new Label("" + spaceship.health, BaseGame.labelStyle);
         healthLabel.setColor(Color.RED);
 
-        scoreLabel = new Label(" x " + leftRocks, BaseGame.labelStyle);
+        shieldLabel = new Label("" + spaceship.shieldPower, BaseGame.labelStyle);
+        shieldLabel.setColor(Color.CYAN);
+
+
+        scoreLabel = new Label("" + leftRocks, BaseGame.labelStyle);
         scoreLabel.setColor(Color.RED);
 
         BaseActor healthIcon = new BaseActor(0,0, uiStage);
         healthIcon.loadTexture("spacewar/heart-icon.png");
 
+        BaseActor shieldIcon = new BaseActor(0,0, uiStage);
+        shieldIcon.loadTexture("spacewar/shield-icon.png");
+
         BaseActor scoreIcon = new BaseActor(100,0, uiStage);
         scoreIcon.loadTexture("spacewar/coin-icon.png");
+
+        uiStage.addActor(healthLabel);
+        uiStage.addActor(healthIcon);
 
         uiStage.addActor(healthLabel);
         uiStage.addActor(healthIcon);
@@ -67,6 +80,8 @@ public class LevelScreen extends BaseScreen{
         uiTable.pad(10);
         uiTable.add(healthIcon).top();
         uiTable.add(healthLabel).top();
+        uiTable.add(shieldIcon).top();
+        uiTable.add(shieldLabel).top();
         uiTable.add().expandX().expandY();
         uiTable.add(scoreIcon).top();
         uiTable.add(scoreLabel).top();
@@ -77,11 +92,21 @@ public class LevelScreen extends BaseScreen{
 
     @Override
     protected void update(float delta) {
-        healthLabel.setText(" x " + spaceship.shieldPower);
-        scoreLabel.setText(" x " + score);
+        healthLabel.setText(""+spaceship.health);
+        shieldLabel.setText(""+spaceship.shieldPower);
+        scoreLabel.setText(""+score);
         if(gameOver)
             return;
 
+        timeInterval += delta;
+        if(timeInterval > 0.6f && limit>0){
+            timeInterval=0.0f;
+            limit--;
+            //new Enemy1(150, 800, mainStage);
+            new Supply(250, 800, mainStage, Supply.SupplyType.SUPPLY_Health);
+
+            new Supply(350, 800, mainStage, Supply.SupplyType.SUPPLY_Shield);
+        }
 
         if(BaseActor.getList(mainStage, "org.propig.game.spacewar.unit.Rock").size() < 8 &&
         leftRocks > 0) {
@@ -89,8 +114,38 @@ public class LevelScreen extends BaseScreen{
             leftRocks--;
         }
 
+
+        for(BaseActor bullet : BaseActor.getList(mainStage, "org.propig.game.spacewar.unit.EnemyBullet")){
+            bullet = (EnemyBullet) bullet;
+            if(bullet.overlaps(spaceship) && !spaceship.isInvincible()){
+                spaceship.shieldPower -= ((EnemyBullet) bullet).damage;
+                if(spaceship.shieldPower <=0){
+                    spaceship.shieldPower = 0;
+                    Explosion boom = new Explosion(0,0,mainStage);
+                    boom.centerAtActor(spaceship);
+                    spaceship.remove();
+                    gameOver = true;
+                }
+            }
+        }
+
+
+        for(BaseActor supply : BaseActor.getList(mainStage, "org.propig.game.spacewar.unit.Supply")){
+            supply = (Supply) supply;
+            if(supply.overlaps(spaceship) ) {
+                if (((Supply) supply).supplyType == Supply.SupplyType.SUPPLY_Health) {
+                    spaceship.health = MathUtils.clamp(spaceship.health + supply.health, spaceship.health, spaceship.maxHealth);
+                } else {
+                    spaceship.shieldPower = MathUtils.clamp(spaceship.shieldPower + supply.health, spaceship.shieldPower, spaceship.maxShieldPower);
+                }
+                supply.remove();
+            }
+        }
+
+
         for(BaseActor rockActor : BaseActor.getList(mainStage,"org.propig.game.spacewar.unit.Rock")){
-            if(rockActor.overlaps(spaceship)){
+            rockActor = (Rock)rockActor;
+            if(rockActor.overlaps(spaceship) && !spaceship.isInvincible()){
                 spaceship.shieldPower -= DamageConst.RockDamage;
                 if(spaceship.shieldPower <=0){
                     spaceship.shieldPower = 0;
@@ -101,24 +156,27 @@ public class LevelScreen extends BaseScreen{
                 }else{
                     Explosion boom = new Explosion(0,0,mainStage);
                     boom.centerAtActor(rockActor);
-                    rockActor.remove();
-                    score += ScoreConst.CollisionScore;
+                    ((Rock) rockActor).health -= DamageConst.SpaceshipDamage;
+                    if(((Rock) rockActor).health <=0) {
+                        rockActor.remove();
+                        score += ScoreConst.CollisionScore;
+                    }
                 }
             }
-
             for(BaseActor laserActor : BaseActor.getList(mainStage, "org.propig.game.spacewar.unit.Laser")){
                 if(laserActor.overlaps(rockActor)){
                     Explosion boom = new Explosion(0,0,mainStage);
                     boom.centerAtActor(rockActor);
                     laserActor.remove();
-                    rockActor.remove();
-                    score += ScoreConst.LazerScore;
+                    ((Rock) rockActor).health -= DamageConst.BulletDamage;
+                    if(((Rock) rockActor).health <=0) {
+                        rockActor.remove();
+                        score += ScoreConst.LazerScore;
+                    }
                 }
             }
+
         }
-
-
-
     }
 
 
@@ -126,7 +184,6 @@ public class LevelScreen extends BaseScreen{
     @Override
     public boolean keyDown(int keycode) {
         if(keycode == Input.Keys.X) {
-
             spaceship.warp();
         }
         if(keycode == Input.Keys.Z) {

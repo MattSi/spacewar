@@ -8,12 +8,13 @@ public class Laser extends BaseActor {
         super(x, y, s);
         loadTexture("spacewar/laser.png");
 
-        addAction(Actions.delay(2));
+        addAction(Actions.delay(1));
         addAction(Actions.after(Actions.fadeOut(0.2f)));
         addAction(Actions.after(Actions.removeActor()));
 
-        setSpeed(400);
-        setMaxSpeed(400);
+        setSpeed(2000);
+        setAcceleration(2000);
+        setMaxSpeed(2000);
         setDeceleration(0);
         setScale(0.4f);
     }
