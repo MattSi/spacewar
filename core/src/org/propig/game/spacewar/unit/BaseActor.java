@@ -29,9 +29,9 @@ import java.util.ArrayList;
  */
 public class BaseActor extends Group
 {
-    private Animation<TextureRegion> animation;
-    private float elapsedTime;
-    private boolean animationPaused;
+    protected Animation<TextureRegion> animation;
+    protected float elapsedTime;
+    protected boolean animationPaused;
 
     private Vector2 velocityVec;
     private Vector2 accelerationVec;
@@ -56,7 +56,8 @@ public class BaseActor extends Group
 
         // perform additional initialization tasks
         setPosition(x,y);
-        s.addActor(this);
+        if(s != null)
+            s.addActor(this);
 
         // initialize animation data
         animation = null;
@@ -268,6 +269,9 @@ public class BaseActor extends Group
      */
     public boolean isAnimationFinished()
     {
+        if(animation == null){
+            return true;
+        }
         return animation.isAnimationFinished(elapsedTime);
     }
 

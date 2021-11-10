@@ -11,7 +11,7 @@ public class Spaceship extends BaseActor implements Runnable {
     private Thrusters thrusters;
     private ThrusterEffect thrusterEffect;
     private Shield shield;
-    public int shieldPower = 50;
+    public int shieldPower = 100;
     public int maxShieldPower = 100;
     private boolean canWarp = false;
 
@@ -44,6 +44,8 @@ public class Spaceship extends BaseActor implements Runnable {
         thrusterEffect.setRotation(90);
         thrusterEffect.setScale(0.25f);
         addActor(thrusterEffect);
+
+        canWarp = true;
     }
 
 
@@ -91,7 +93,7 @@ public class Spaceship extends BaseActor implements Runnable {
 
         Warp warp1 = new Warp(0,0,getStage());
         warp1.centerAtActor(this);
-        setPosition(MathUtils.random(800), MathUtils.random(600));
+        setPosition(MathUtils.random(550), MathUtils.random(700));
         Warp warp2 = new Warp(0,0,getStage());
         warp2.centerAtActor(this);
 
@@ -119,11 +121,7 @@ public class Spaceship extends BaseActor implements Runnable {
 
     @Override
     public void run() {
-        if(canWarp){
-            canWarp = false;
-        } else {
-            canWarp = true;
-        }
+       canWarp = !canWarp;
     }
 
     public boolean isInvincible (){

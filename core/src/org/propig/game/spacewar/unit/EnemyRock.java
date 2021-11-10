@@ -5,12 +5,12 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import org.propig.game.spacewar.unit.BaseActor;
 
-public class Rock extends BaseActor {
+public class EnemyRock extends Enemy {
 
     float scale=0.8f;
 
-    public Rock(float x, float y, Stage s) {
-        super(x, y, s);
+    public EnemyRock(float x, float y, Stage s) {
+        super(x, y, s, false);
         loadTexture("spacewar/rock.png");
 
         float random = MathUtils.random(30);
@@ -19,8 +19,14 @@ public class Rock extends BaseActor {
         setMaxSpeed(80 + random);
         setDeceleration(0);
         health = 20;
+        damage = 18;
 
         setMotionAngle(MathUtils.random(225,330));
+    }
+
+    @Override
+    public void shoot(float dt) {
+
     }
 
     @Override

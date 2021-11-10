@@ -26,19 +26,28 @@ public class EnemyBullet extends BaseActor{
         setScale(1.2f);
         this.damage = damage;
 
-        List<BaseActor> spaceship = BaseActor.getList(s, "org.propig.game.spacewar.unit.Spaceship");
+    }
 
-        if(spaceship==null || spaceship.size()==0){
-            setRotation(180);
-            setMotionAngle(270);
+    public void setDirection(boolean target, float direction){
+        if(target){
+            Stage s = getStage();
+            List<BaseActor> spaceship = BaseActor.getList(s, "org.propig.game.spacewar.unit.Spaceship");
+            if(spaceship != null && spaceship.size()>0) {
+                float deltax = (spaceship.get(0)).getX() - getX();
+                float deltay = (spaceship.get(0)).getY() - getY();
+                float degree = MathUtils.atan2(deltay, deltax) * MathUtils.radDeg;
+                setMotionAngle(degree);
+                setRotation(degree - 90);
+            } else {
+                setRotation(180);
+                setMotionAngle(270);
+            }
         } else {
-            float deltax = ((Spaceship)spaceship.get(0)).getX() - getX();
-            float deltay = ((Spaceship)spaceship.get(0)).getY() - getY();
-            float degree = MathUtils.atan2(deltay, deltax) * MathUtils.radDeg;
-            setMotionAngle(degree);
-            setRotation(degree - 90);
+            setRotation(direction);
+            setMotionAngle(direction + 90);
         }
     }
+
 
     @Override
     public void act(float dt) {

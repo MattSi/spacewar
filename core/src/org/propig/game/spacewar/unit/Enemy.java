@@ -12,11 +12,27 @@ public abstract class Enemy extends BaseActor{
     float initRotation = 180;
     float durationTime = 15;
     float fadeInOutTime = 0.2f;
-    public Enemy(float x, float y, Stage s) {
+    public int health;
+    public int damage;
+    boolean isCircle;
+    public Enemy(float x, float y, Stage s, boolean isCircle) {
         super(x, y, s);
         this.s = s;
+        this.isCircle = isCircle;
         addAction(Actions.delay(durationTime));
         addAction(Actions.after(Actions.fadeOut(fadeInOutTime)));
         addAction(Actions.after(Actions.removeActor()));
+    }
+
+    public abstract void shoot(float dt);
+
+    public void doCicle(float dt){
+        float motionAngle = getMotionAngle();
+        float rorationAngle = getRotation();
+        motionAngle += 80 * dt;
+        rorationAngle += 80 * dt;
+        setMotionAngle(motionAngle);
+        setRotation(rorationAngle);
+        accelerationAtAngle(motionAngle);
     }
 }

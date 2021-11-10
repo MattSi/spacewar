@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
 public class Laser extends BaseActor {
+    public int damage;
     public Laser(float x, float y, Stage s) {
         super(x, y, s);
         loadTexture("spacewar/laser.png");
@@ -17,6 +18,7 @@ public class Laser extends BaseActor {
         setMaxSpeed(2000);
         setDeceleration(0);
         setScale(0.4f);
+        damage = 11;
     }
 
     @Override

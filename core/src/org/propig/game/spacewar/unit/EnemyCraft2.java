@@ -6,9 +6,9 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
 import java.util.List;
 
-public class Enemy2 extends Enemy{
-    public Enemy2(float x, float y, Stage s) {
-        super(x, y, s);
+public class EnemyCraft2 extends Enemy{
+    public EnemyCraft2(float x, float y, Stage s, boolean isCircle) {
+        super(x, y, s, isCircle);
         loadTexture("spacewar/ships/ship_0005.png");
 
         setSpeed(100);
@@ -18,6 +18,7 @@ public class Enemy2 extends Enemy{
         setRotation(initRotation);
         setScale(2.f);
         health = 15;
+        damage = 18;
 
         setMotionAngle(initMotionAngle);
     }
@@ -32,25 +33,22 @@ public class Enemy2 extends Enemy{
             return;
 
         timeInterval += dt;
-        if(timeInterval > 2.0f && bulletNumber > 0){
-            timeInterval =0.0f;
+        if(timeInterval > 1.9f && bulletNumber > 0){
+            timeInterval -= 1.9f;
             bulletNumber--;
-            shoot();
+            shoot(dt);
         }
 
-        float motionAngle = getMotionAngle();
-        float rorationAngle = getRotation();
-        motionAngle += 90 * dt;
-        rorationAngle += 90 *dt;
-        setMotionAngle(motionAngle);
-        setRotation(rorationAngle);
-        accelerationAtAngle(motionAngle);
+        if(isCircle) {
+            doCicle(dt);
+        }
     }
 
-    public void shoot(){
+    @Override
+    public void shoot(float dt){
         EnemyBullet b =  new EnemyBullet(getX(),getY(),s, 200, 12, "spacewar/tiles/tile_0012.png");
         b.centerAtActor(this);
-
+        b.setDirection(true, 0);
     }
 
 }
