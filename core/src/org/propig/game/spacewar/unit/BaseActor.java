@@ -1,6 +1,7 @@
 package org.propig.game.spacewar.unit;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -32,6 +33,7 @@ public class BaseActor extends Group
     protected Animation<TextureRegion> animation;
     protected float elapsedTime;
     protected boolean animationPaused;
+    public boolean alive = true;
 
     private Vector2 velocityVec;
     private Vector2 accelerationVec;
@@ -47,7 +49,6 @@ public class BaseActor extends Group
     public int health;
     public int maxHealth;
 
-    protected long spawnTime;
 
     public BaseActor(float x, float y, Stage s)
     {
@@ -72,7 +73,6 @@ public class BaseActor extends Group
         deceleration = 0;
 
         boundaryPolygon = null;
-        spawnTime = System.currentTimeMillis();
     }
 
     public void accelerationAtAngle(float angle){
@@ -561,6 +561,7 @@ public class BaseActor extends Group
     public static void setWorldBounds(float width, float height)
     {
         worldBounds = new Rectangle( 0,0, width, height );
+
     }   
 
     /**

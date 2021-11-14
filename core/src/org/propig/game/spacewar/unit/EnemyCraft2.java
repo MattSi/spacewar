@@ -1,14 +1,12 @@
 package org.propig.game.spacewar.unit;
 
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-
-import java.util.List;
+import org.propig.game.spacewar.utils.EnemyBulletPool;
+import org.propig.game.spacewar.utils.Resources;
 
 public class EnemyCraft2 extends Enemy{
-    public EnemyCraft2(float x, float y, Stage s, boolean isCircle) {
-        super(x, y, s, isCircle);
+    public EnemyCraft2(float x, float y, Stage s,  boolean isCircle) {
+        super(x, y, s,  isCircle);
         loadTexture("spacewar/ships/ship_0005.png");
 
         setSpeed(100);
@@ -26,10 +24,9 @@ public class EnemyCraft2 extends Enemy{
     @Override
     public void act(float dt) {
         super.act(dt);
-        long timeDelta = System.currentTimeMillis() - spawnTime;
         applyPhysics(dt);
 
-        if(timeDelta < 3000)
+        if(elapsedTime < 3.f)
             return;
 
         timeInterval += dt;
@@ -46,9 +43,16 @@ public class EnemyCraft2 extends Enemy{
 
     @Override
     public void shoot(float dt){
-        EnemyBullet b =  new EnemyBullet(getX(),getY(),s, 200, 12, "spacewar/tiles/tile_0012.png");
+        EnemyBullet b =  EnemyBulletPool.getInstance().obtain(); //new EnemyBullet(getX(),getY(),s, 300, 8, "spacewar/tiles/tile_0003.png");
+        b.setSpeed(300);
+        b.setMaxSpeed(300);
+        b.setDeceleration(0);
+        b.setAcceleration(300);
+        b.setPosition(getX(), getY());
         b.centerAtActor(this);
-        b.setDirection(true, 0);
+        b.setDirection(false, 180);
+        b.setAnimation(Resources.getInstance().enemyCraft2Bullet);
+        b.alive=true;
     }
 
 }

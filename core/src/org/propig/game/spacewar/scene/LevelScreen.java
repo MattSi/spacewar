@@ -4,18 +4,23 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
 import org.propig.game.spacewar.BaseGame;
 import org.propig.game.spacewar.unit.*;
 import org.propig.game.spacewar.gameconst.ScoreConst;
+import org.propig.game.spacewar.utils.EnemyBulletPool;
 import org.propig.game.spacewar.utils.ExplosionPool;
+
+import java.util.ArrayList;
 
 public class LevelScreen extends BaseScreen{
     boolean gameOver;
     Spaceship spaceship;
     Label shieldLabel;
     Label scoreLabel;
-    ForeverLevel foreverLevel = new ForeverLevel(0,0,mainStage);
+    ForeverLevel foreverLevel;
     ExplosionPool explosionPool;
+    Walker walker;
 
     int bomb;
     int score;
@@ -26,12 +31,19 @@ public class LevelScreen extends BaseScreen{
         new Sky(0, 700, mainStage);
         new Sky(0, 1400, mainStage);
 
+        EnemyBulletPool.stage = mainStage;
+        EnemyBulletPool.getInstance();
+
+
+        walker = new Walker(300, 400, mainStage);
 
 
         BaseActor.setWorldBounds(worldWidth,worldHeigth);
 
         spaceship = new Spaceship(200,100,mainStage);
         explosionPool = new ExplosionPool(100, 150, mainStage);
+        foreverLevel = new ForeverLevel(0,0,mainStage);
+
 
         bomb = 100;
 
@@ -75,11 +87,17 @@ public class LevelScreen extends BaseScreen{
         }
 
 
+
         for(BaseActor bullet : BaseActor.getList(mainStage, "org.propig.game.spacewar.unit.EnemyBullet")){
             bullet = (EnemyBullet) bullet;
+            if(!bullet.alive){
+                EnemyBulletPool.getInstance().free(((EnemyBullet)bullet));
+                continue;
+            }
             if(bullet.overlaps(spaceship) && !spaceship.isInvincible()){
                 spaceship.shieldPower -= ((EnemyBullet) bullet).damage;
                 bullet.remove();
+                EnemyBulletPool.getInstance().free(((EnemyBullet)bullet));
                 if(spaceship.shieldPower <=0){
                     spaceship.shieldPower = 0;
                     Explosion boom = explosionPool.obtain();
@@ -144,6 +162,11 @@ public class LevelScreen extends BaseScreen{
         if(keycode == Input.Keys.X) {
             spaceship.warp();
         }
+        if(keycode == Input.Keys.F) {
+            boolean  walkerVisible = walker.isVisible();
+            walkerVisible = !walkerVisible;
+            walker.setVisible(walkerVisible);
+        }
         if(keycode == Input.Keys.Z) {
             if(BaseActor.getList(mainStage, "org.propig.game.spacewar.unit.Laser").size() < 10)
                 spaceship.shoot();
@@ -154,12 +177,13 @@ public class LevelScreen extends BaseScreen{
 
                     Explosion boom = explosionPool.obtain();
                     boom.centerAtActor(enemy);
-                    boom.setAnimationPaused(false);
+                   // boom.setAnimationPaused(false);
                     enemy.remove();
                 }
 
                 for(BaseActor bullet : BaseActor.getList(mainStage, "org.propig.game.spacewar.unit.EnemyBullet")){
                     bullet.remove();
+                    EnemyBulletPool.getInstance().free((EnemyBullet) bullet);
                 }
                 bomb--;
             }

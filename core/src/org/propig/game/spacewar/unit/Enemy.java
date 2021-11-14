@@ -2,10 +2,10 @@ package org.propig.game.spacewar.unit;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import org.propig.game.spacewar.utils.EnemyBulletPool;
 
 public abstract class Enemy extends BaseActor{
     protected final Stage s;
-
     int bulletNumber = 10;
     float timeInterval = 0.0f;
     float initMotionAngle = 270;
@@ -15,6 +15,7 @@ public abstract class Enemy extends BaseActor{
     public int health;
     public int damage;
     boolean isCircle;
+
     public Enemy(float x, float y, Stage s, boolean isCircle) {
         super(x, y, s);
         this.s = s;

@@ -12,7 +12,6 @@ public class ForeverLevel extends BaseActor {
 
     public ForeverLevel(float x, float y, Stage s) {
         super(x, y, s);
-
     }
 
     @Override

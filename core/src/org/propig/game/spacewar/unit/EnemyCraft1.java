@@ -1,10 +1,8 @@
 package org.propig.game.spacewar.unit;
 
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-
-import java.util.List;
+import org.propig.game.spacewar.utils.EnemyBulletPool;
+import org.propig.game.spacewar.utils.Resources;
 
 public class EnemyCraft1 extends Enemy{
 
@@ -29,11 +27,10 @@ public class EnemyCraft1 extends Enemy{
 
     @Override
     public void act(float dt) {
-        long timeDelta = System.currentTimeMillis() - spawnTime;
         super.act(dt);
         applyPhysics(dt);
 
-        if(timeDelta < 3000)
+        if(elapsedTime < 2.f)
             return;
 
         timeInterval += dt;
@@ -42,7 +39,6 @@ public class EnemyCraft1 extends Enemy{
             bulletNumber--;
             shoot(dt);
         }
-
         if(isCircle) {
            doCicle(dt);
         }
@@ -50,9 +46,15 @@ public class EnemyCraft1 extends Enemy{
 
     @Override
     public void shoot(float dt){
-        EnemyBullet b =  new EnemyBullet(getX(),getY(),s, 300, 8, "spacewar/tiles/tile_0003.png");
+        EnemyBullet b =  EnemyBulletPool.getInstance().obtain();
+        b.setSpeed(300);
+        b.setMaxSpeed(300);
+        b.setDeceleration(0);
+        b.setAcceleration(300);
+        b.setPosition(getX(), getY());
         b.centerAtActor(this);
-        b.setDirection(false, 180);
+        b.setDirection(true, 180);
+        b.setAnimation(Resources.getInstance().enemyCraft1Bullet);
+        b.alive=true;
     }
-
 }

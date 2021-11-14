@@ -3,6 +3,7 @@ package org.propig.game.spacewar;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -21,6 +22,7 @@ public abstract class BaseGame extends Game {
     private static BaseGame game;
     public static TextButton.TextButtonStyle textButtonStyle;
     public static Label.LabelStyle labelStyle;
+    protected AssetManager assetManager;
 
 
     /**

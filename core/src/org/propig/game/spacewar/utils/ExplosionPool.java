@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Pool;
 import org.propig.game.spacewar.unit.Explosion;
 
+
 public class ExplosionPool extends Pool<Explosion> {
     Stage s;
     public ExplosionPool(int initialCapacity, int max, Stage s) {
@@ -24,6 +25,8 @@ public class ExplosionPool extends Pool<Explosion> {
     public Explosion obtain() {
         Explosion e = super.obtain();
         s.addActor(e);
+        e.setVisible(true);
+        e.setAnimation(Resources.getInstance().explosionAsset);
         return e;
     }
 
@@ -33,7 +36,10 @@ public class ExplosionPool extends Pool<Explosion> {
 
     @Override
     protected Explosion newObject() {
-        return new Explosion(0,0, s, this);
+        Explosion explosion = new Explosion(0,0, s, this);
+        explosion.remove();
+        explosion.setVisible(false);
+        return explosion;
     }
 
     @Override

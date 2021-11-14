@@ -2,6 +2,7 @@ package org.propig.game.spacewar.unit;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import org.propig.game.spacewar.utils.EnemyBulletPool;
 
 public class EnemyCraftCircle extends BaseActor{
     int craftKind;

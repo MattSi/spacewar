@@ -2,15 +2,14 @@ package org.propig.game.spacewar.unit;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import org.propig.game.spacewar.unit.BaseActor;
+import org.propig.game.spacewar.utils.EnemyBulletPool;
 
 public class EnemyRock extends Enemy {
 
     float scale=0.8f;
 
     public EnemyRock(float x, float y, Stage s) {
-        super(x, y, s, false);
+        super(x, y, s,  false);
         loadTexture("spacewar/rock.png");
 
         float random = MathUtils.random(30);

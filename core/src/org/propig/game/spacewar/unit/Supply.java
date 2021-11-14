@@ -38,12 +38,11 @@ public class Supply extends BaseActor{
 
     @Override
     public void act(float dt) {
-        long timeDelta = System.currentTimeMillis() - spawnTime;
         super.act(dt);
         applyPhysics(dt);
         wrapBounceWorld();
 
-        if(timeDelta < 2000){
+        if(elapsedTime < 2.f){
             return;
         }
 
