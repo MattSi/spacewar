@@ -35,7 +35,6 @@ public class EnemyBulletPool extends Pool<EnemyBullet> {
         EnemyBullet e = super.obtain();
         stage.addActor(e);
         e.setVisible(true);
-        e.setAnimation(Resources.getInstance().explosionAsset);
         return e;
     }
 }

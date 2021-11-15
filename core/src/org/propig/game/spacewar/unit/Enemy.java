@@ -2,7 +2,6 @@ package org.propig.game.spacewar.unit;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import org.propig.game.spacewar.utils.EnemyBulletPool;
 
 public abstract class Enemy extends BaseActor{
     protected final Stage s;
@@ -14,15 +13,22 @@ public abstract class Enemy extends BaseActor{
     float fadeInOutTime = 0.2f;
     public int health;
     public int damage;
+    public EnemyKind enemyKind;
+
+    public boolean isCircle() {
+        return isCircle;
+    }
+
+    public void setCircle(boolean circle) {
+        isCircle = circle;
+    }
+
     boolean isCircle;
 
     public Enemy(float x, float y, Stage s, boolean isCircle) {
         super(x, y, s);
         this.s = s;
         this.isCircle = isCircle;
-        addAction(Actions.delay(durationTime));
-        addAction(Actions.after(Actions.fadeOut(fadeInOutTime)));
-        addAction(Actions.after(Actions.removeActor()));
     }
 
     public abstract void shoot(float dt);
@@ -35,5 +41,11 @@ public abstract class Enemy extends BaseActor{
         setMotionAngle(motionAngle);
         setRotation(rorationAngle);
         accelerationAtAngle(motionAngle);
+    }
+
+    public enum EnemyKind {
+        EnemyCraft1,
+        EnemyCraft2,
+        EnemyRock;
     }
 }

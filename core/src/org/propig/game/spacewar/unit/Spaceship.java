@@ -14,6 +14,7 @@ public class Spaceship extends BaseActor implements Runnable {
     public int shieldPower = 100;
     public int maxShieldPower = 100;
     private boolean canWarp = false;
+    public int lazerPromotion = 0;
 
     public Spaceship(float x, float y, Stage s) {
         super(x, y, s);
@@ -116,6 +117,7 @@ public class Spaceship extends BaseActor implements Runnable {
         laser.centerAtActor(this);
         laser.setRotation(this.getRotation());
         laser.setMotionAngle(getRotation());
+        laser.damage += lazerPromotion;
 
     }
 

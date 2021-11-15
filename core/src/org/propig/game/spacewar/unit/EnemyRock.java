@@ -21,6 +21,7 @@ public class EnemyRock extends Enemy {
         damage = 18;
 
         setMotionAngle(MathUtils.random(225,330));
+        enemyKind = EnemyKind.EnemyRock;
     }
 
     @Override
@@ -33,5 +34,8 @@ public class EnemyRock extends Enemy {
         super.act(delta);
         applyPhysics(delta);
         wrapBounceWorld();
+        if(elapsedTime > 13.0f){
+            remove();
+        }
     }
 }

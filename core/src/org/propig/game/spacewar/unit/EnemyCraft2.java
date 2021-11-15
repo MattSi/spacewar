@@ -1,13 +1,15 @@
 package org.propig.game.spacewar.unit;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Pool;
 import org.propig.game.spacewar.utils.EnemyBulletPool;
+import org.propig.game.spacewar.utils.EnemyCraft2Pool;
 import org.propig.game.spacewar.utils.Resources;
 
-public class EnemyCraft2 extends Enemy{
+public class EnemyCraft2 extends Enemy implements Pool.Poolable{
     public EnemyCraft2(float x, float y, Stage s,  boolean isCircle) {
         super(x, y, s,  isCircle);
-        loadTexture("spacewar/ships/ship_0005.png");
+        //loadTexture("spacewar/ships/ship_0005.png");
 
         setSpeed(100);
         setMaxSpeed(100);
@@ -19,6 +21,7 @@ public class EnemyCraft2 extends Enemy{
         damage = 18;
 
         setMotionAngle(initMotionAngle);
+        enemyKind = EnemyKind.EnemyCraft2;
     }
 
     @Override
@@ -26,8 +29,12 @@ public class EnemyCraft2 extends Enemy{
         super.act(dt);
         applyPhysics(dt);
 
-        if(elapsedTime < 3.f)
+        if(elapsedTime < 2.f)
             return;
+        if(elapsedTime > durationTime){
+            EnemyCraft2Pool.getInstance().free(this);
+            return;
+        }
 
         timeInterval += dt;
         if(timeInterval > 1.9f && bulletNumber > 0){
@@ -43,11 +50,11 @@ public class EnemyCraft2 extends Enemy{
 
     @Override
     public void shoot(float dt){
-        EnemyBullet b =  EnemyBulletPool.getInstance().obtain(); //new EnemyBullet(getX(),getY(),s, 300, 8, "spacewar/tiles/tile_0003.png");
-        b.setSpeed(300);
-        b.setMaxSpeed(300);
+        EnemyBullet b =  EnemyBulletPool.getInstance().obtain();
+        b.setSpeed(200);
+        b.setMaxSpeed(200);
         b.setDeceleration(0);
-        b.setAcceleration(300);
+        b.setAcceleration(200);
         b.setPosition(getX(), getY());
         b.centerAtActor(this);
         b.setDirection(false, 180);
@@ -55,4 +62,13 @@ public class EnemyCraft2 extends Enemy{
         b.alive=true;
     }
 
+    @Override
+    public void reset() {
+        elapsedTime = 0f;
+        timeInterval=0f;
+        animation = null;
+        health = 15;
+        alive = true;
+        remove();
+    }
 }

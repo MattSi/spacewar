@@ -3,12 +3,13 @@ package org.propig.game.spacewar.unit;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Pool;
+import org.propig.game.spacewar.utils.EnemyBulletPool;
 
 import java.util.List;
 
 public class EnemyBullet extends BaseActor implements Pool.Poolable {
     public int damage;
-    private float MAX_LIFETIME = 5; // 5 seconds to auto-destruct
+    private float MAX_LIFETIME = 2.0f; // 5 seconds to auto-destruct
 
     public EnemyBullet(float x, float y, Stage s) {
         super(x, y, s);
@@ -40,8 +41,7 @@ public class EnemyBullet extends BaseActor implements Pool.Poolable {
     public void act(float dt) {
         super.act(dt);
         if(elapsedTime > MAX_LIFETIME){
-            remove();
-            alive = false;
+            EnemyBulletPool.getInstance().free(this);
         }
         applyPhysics(dt);
     }
@@ -50,5 +50,6 @@ public class EnemyBullet extends BaseActor implements Pool.Poolable {
     public void reset() {
         elapsedTime = 0f;
         animation = null;
+        remove();
     }
 }

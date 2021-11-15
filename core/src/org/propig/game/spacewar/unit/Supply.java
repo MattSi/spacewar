@@ -15,8 +15,10 @@ public class Supply extends BaseActor{
         health = 80;
         if(supplyType == SupplyType.SUPPLY_Health){
             loadTexture("spacewar/tiles/tile_0024.png");
-        } else {
+        } else if(supplyType == SupplyType.SUPPLY_Shield){
             loadTexture("spacewar/tiles/tile_0026.png");
+        } else if( supplyType == SupplyType.SUPPLY_LAZERPROMOTION){
+            loadTexture("spacewar/tiles/tile_0025.png");
         }
 
         Action pulse = Actions.sequence(
@@ -60,6 +62,7 @@ public class Supply extends BaseActor{
 
     public enum SupplyType {
         SUPPLY_Health,
-        SUPPLY_Shield;
+        SUPPLY_Shield,
+        SUPPLY_LAZERPROMOTION;
     }
 }

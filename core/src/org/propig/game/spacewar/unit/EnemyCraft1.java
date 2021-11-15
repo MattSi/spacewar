@@ -1,16 +1,15 @@
 package org.propig.game.spacewar.unit;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Pool;
 import org.propig.game.spacewar.utils.EnemyBulletPool;
+import org.propig.game.spacewar.utils.EnemyCraft1Pool;
 import org.propig.game.spacewar.utils.Resources;
 
-public class EnemyCraft1 extends Enemy{
+public class EnemyCraft1 extends Enemy implements Pool.Poolable{
 
     public EnemyCraft1(float x, float y, Stage s, boolean isCircle) {
         super(x, y, s, isCircle);
-        loadTexture("spacewar/ships/ship_0009.png");
-
-
 
         setSpeed(150);
         setMaxSpeed(150);
@@ -23,6 +22,7 @@ public class EnemyCraft1 extends Enemy{
         this.isCircle = isCircle;
 
         setMotionAngle(initMotionAngle);
+        enemyKind = EnemyKind.EnemyCraft1;
     }
 
     @Override
@@ -30,8 +30,11 @@ public class EnemyCraft1 extends Enemy{
         super.act(dt);
         applyPhysics(dt);
 
-        if(elapsedTime < 2.f)
+        if(elapsedTime < 2.f )
             return;
+        if(elapsedTime > durationTime){
+            alive=false;
+        }
 
         timeInterval += dt;
         if(timeInterval > 1.9f && bulletNumber > 0){
@@ -47,14 +50,24 @@ public class EnemyCraft1 extends Enemy{
     @Override
     public void shoot(float dt){
         EnemyBullet b =  EnemyBulletPool.getInstance().obtain();
-        b.setSpeed(300);
-        b.setMaxSpeed(300);
+        b.setSpeed(200);
+        b.setMaxSpeed(200);
         b.setDeceleration(0);
-        b.setAcceleration(300);
+        b.setAcceleration(200);
         b.setPosition(getX(), getY());
         b.centerAtActor(this);
         b.setDirection(true, 180);
         b.setAnimation(Resources.getInstance().enemyCraft1Bullet);
         b.alive=true;
+    }
+
+    @Override
+    public void reset() {
+        elapsedTime = 0f;
+        timeInterval=0f;
+        animation=null;
+        health = 10;
+        alive=true;
+        remove();
     }
 }

@@ -12,12 +12,14 @@ public class Resources {
     public Animation<TextureRegion> explosionAsset = loadAnimationFromSheet("spacewar/explosion.png", 6,6,0.03f, false);
     public Animation<TextureRegion> enemyCraft1 = loadTexture("spacewar/ships/ship_0009.png");
     public Animation<TextureRegion> enemyCraft2 = loadTexture("spacewar/ships/ship_0005.png");
+    public Animation<TextureRegion> lazerP = loadTexture("spacewar/tiles/tile_0025.png");
 
 
 
 
 
-    public static Resources instance;
+
+    private static Resources instance;
 
     public static Resources getInstance(){
         if (instance == null){
