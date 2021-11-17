@@ -2,7 +2,10 @@ package org.propig.game.spacewar.hero;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -16,6 +19,8 @@ public class Spaceship extends BaseActor implements Runnable {
     public int maxShieldPower = 100;
     private boolean canWarp = false;
     public int lazerPromotion = 0;
+    float lastxAxis=0;
+    float lastyAxis=0;
 
     public Spaceship(float x, float y, Stage s) {
         super(x, y, s);
@@ -58,22 +63,49 @@ public class Spaceship extends BaseActor implements Runnable {
         float degreesPerSecond = 120; // rotation speed
 
 
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-            accelerationAtAngle(180);
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-            accelerationAtAngle(0);
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            accelerationAtAngle(90);
-            thrusterEffect.start();
+        if(Controllers.getControllers().size > 0){
+            Controller gamepad = Controllers.getControllers().get(0);
+
+            float xAxis = gamepad.getAxis(0);
+            float yAxis = -gamepad.getAxis(1);
+
+            Vector2 direction = new Vector2(xAxis, yAxis);
+
+
+            float degree = MathUtils.atan2(yAxis, xAxis) * MathUtils.radDeg;
+            if(Vector2.len(xAxis, yAxis) > 0.1f) {
+
+                accelerationAtAngle(degree);
+            }
+
+            //System.out.printf("%.5f, %.5f, %.5f, %.5f\n",xAxis, yAxis, direction.len(), degree);
+//            if(Float.compare(xAxis, lastxAxis) == 0 && Float.compare(yAxis, lastyAxis) == 0){
+//                ;
+//            } else {
+//
+//            }
+            lastxAxis = xAxis;
+            lastyAxis = yAxis;
+
         } else {
-            //thrusters.setVisible(false);
-            thrusterEffect.stop();
+            if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+                accelerationAtAngle(180);
+            }
+            if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+                accelerationAtAngle(0);
+            }
+            if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
+                accelerationAtAngle(90);
+                thrusterEffect.start();
+            } else {
+                //thrusters.setVisible(false);
+                thrusterEffect.stop();
+            }
+            if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
+                accelerationAtAngle(270);
+            }
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
-            accelerationAtAngle(270);
-        }
+
 
         shield.setOpacity(shieldPower*1.0f/maxShieldPower);
         if(shieldPower < 0)

@@ -1,6 +1,9 @@
 package org.propig.game.spacewar.scene;
 
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.ControllerListener;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -22,7 +25,8 @@ import org.propig.game.spacewar.utils.EnemyCraft2Pool;
 import org.propig.game.spacewar.utils.ExplosionPool;
 
 
-public class LevelScreen extends BaseScreen{
+
+public class LevelScreen extends BaseScreen implements ControllerListener {
     boolean gameOver;
     Spaceship spaceship;
     Label shieldLabel;
@@ -35,6 +39,12 @@ public class LevelScreen extends BaseScreen{
     int score;
     float shootInterval=0.f;
     float missileInterval = 0.f;
+
+    public LevelScreen() {
+        super();
+        Controllers.clearListeners();
+        Controllers.addListener(this);
+    }
 
     @Override
     protected void initialize() {
@@ -253,4 +263,50 @@ public class LevelScreen extends BaseScreen{
         return false;
     }
 
+    @Override
+    public void connected(Controller controller) {
+
+    }
+
+    @Override
+    public void disconnected(Controller controller) {
+
+    }
+
+    @Override
+    public boolean buttonDown(Controller controller, int buttonCode) {
+
+        if(buttonCode == 2) {
+            spaceship.warp();
+        }
+        if(buttonCode == 0) {
+            if(BaseActor.getList(mainStage, "org.propig.game.spacewar.hero.Laser").size() < 10)
+                spaceship.shoot();
+        }
+        if(buttonCode == 1){
+            if(bomb > 0){
+                for(BaseActor enemy : BaseActor.getList(mainStage,"org.propig.game.spacewar.enemy.Enemy")){
+                    Explosion boom = explosionPool.obtain();
+                    boom.centerAtActor(enemy);
+                    tryRecycleCraft((Enemy) enemy);
+                }
+
+                for(BaseActor bullet : BaseActor.getList(mainStage, "org.propig.game.spacewar.enemy.EnemyBullet")){
+                    EnemyBulletPool.getInstance().free((EnemyBullet) bullet);
+                }
+                bomb--;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean buttonUp(Controller controller, int buttonCode) {
+        return false;
+    }
+
+    @Override
+    public boolean axisMoved(Controller controller, int axisCode, float value) {
+        return false;
+    }
 }

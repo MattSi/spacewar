@@ -65,7 +65,7 @@ public class Missile extends BaseActor {
         for(BaseActor enemy : BaseActor.getList(getStage(),"org.propig.game.spacewar.enemy.Enemy")){
             if(!onScreen(enemy)) continue;
             float currentDistance = Vector2.dst(getX(),getY(), enemy.getX(), enemy.getY());
-            if(currentDistance < 700){
+            if(currentDistance < 500){
                 target = (Enemy) enemy;
                 targetRange.add(enemy);
             }
