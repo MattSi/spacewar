@@ -2,7 +2,7 @@ package org.propig.game.spacewar.utils;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Pool;
-import org.propig.game.spacewar.unit.Explosion;
+import org.propig.game.spacewar.explosion.Explosion;
 
 
 public class ExplosionPool extends Pool<Explosion> {

@@ -2,7 +2,7 @@ package org.propig.game.spacewar.utils;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Pool;
-import org.propig.game.spacewar.unit.EnemyBullet;
+import org.propig.game.spacewar.enemy.EnemyBullet;
 
 public class EnemyBulletPool extends Pool<EnemyBullet> {
     private static EnemyBulletPool instance;

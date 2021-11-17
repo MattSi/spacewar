@@ -1,4 +1,4 @@
-package org.propig.game.spacewar.unit;
+package org.propig.game.spacewar.hero;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import org.propig.game.spacewar.BaseActor;
 
 public class Spaceship extends BaseActor implements Runnable {
     private Thrusters thrusters;
@@ -85,8 +86,9 @@ public class Spaceship extends BaseActor implements Runnable {
     }
 
     public void warp(){
-        if(getStage() == null  )
+        if(getStage() == null  ) {
             return;
+        }
 
         if(canWarp){
             return;
@@ -119,6 +121,17 @@ public class Spaceship extends BaseActor implements Runnable {
         laser.setMotionAngle(getRotation());
         laser.damage += lazerPromotion;
 
+
+    }
+
+    public void shootMissile(){
+        Missile missile1 = new Missile(0,0, getStage());
+        missile1.leftAtActor(this);
+        missile1.setMotionAngle(90);
+
+        Missile missile2 = new Missile(0,0, getStage());
+        missile2.rightAtActor(this);
+        missile2.setMotionAngle(90);
     }
 
     @Override

@@ -7,8 +7,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 
 public class Resources {
-    public Animation<TextureRegion> enemyCraft1Bullet = loadTexture("spacewar/tiles/tile_0003.png");
-    public Animation<TextureRegion> enemyCraft2Bullet = loadTexture("spacewar/tiles/tile_0012.png");
+    public Animation<TextureRegion> enemyCraft1Bullet = loadTexture("spacewar/tiles/tile_0000.png");
+    public Animation<TextureRegion> enemyCraft2Bullet = loadTexture("spacewar/tiles/tile_0003.png");
     public Animation<TextureRegion> explosionAsset = loadAnimationFromSheet("spacewar/explosion.png", 6,6,0.03f, false);
     public Animation<TextureRegion> enemyCraft1 = loadTexture("spacewar/ships/ship_0009.png");
     public Animation<TextureRegion> enemyCraft2 = loadTexture("spacewar/ships/ship_0005.png");

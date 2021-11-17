@@ -1,9 +1,9 @@
-package org.propig.game.spacewar.unit;
+package org.propig.game.spacewar.enemy;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import org.propig.game.spacewar.BaseActor;
 
-public abstract class Enemy extends BaseActor{
+public abstract class Enemy extends BaseActor {
     protected final Stage s;
     int bulletNumber = 10;
     float timeInterval = 0.0f;

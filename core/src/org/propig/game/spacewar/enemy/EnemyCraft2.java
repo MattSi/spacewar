@@ -1,28 +1,27 @@
-package org.propig.game.spacewar.unit;
+package org.propig.game.spacewar.enemy;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Pool;
 import org.propig.game.spacewar.utils.EnemyBulletPool;
-import org.propig.game.spacewar.utils.EnemyCraft1Pool;
+import org.propig.game.spacewar.utils.EnemyCraft2Pool;
 import org.propig.game.spacewar.utils.Resources;
 
-public class EnemyCraft1 extends Enemy implements Pool.Poolable{
+public class EnemyCraft2 extends Enemy implements Pool.Poolable{
+    public EnemyCraft2(float x, float y, Stage s,  boolean isCircle) {
+        super(x, y, s,  isCircle);
+        //loadTexture("spacewar/ships/ship_0005.png");
 
-    public EnemyCraft1(float x, float y, Stage s, boolean isCircle) {
-        super(x, y, s, isCircle);
-
-        setSpeed(150);
-        setMaxSpeed(150);
+        setSpeed(100);
+        setMaxSpeed(100);
         setAcceleration(150);
         setDeceleration(0);
         setRotation(initRotation);
         setScale(2.f);
-        health = 10;
-        damage = 15;
-        this.isCircle = isCircle;
+        health = 15;
+        damage = 18;
 
         setMotionAngle(initMotionAngle);
-        enemyKind = EnemyKind.EnemyCraft1;
+        enemyKind = EnemyKind.EnemyCraft2;
     }
 
     @Override
@@ -30,20 +29,22 @@ public class EnemyCraft1 extends Enemy implements Pool.Poolable{
         super.act(dt);
         applyPhysics(dt);
 
-        if(elapsedTime < 2.f )
+        if(elapsedTime < 2.f)
             return;
         if(elapsedTime > durationTime){
-            alive=false;
+            EnemyCraft2Pool.getInstance().free(this);
+            return;
         }
 
         timeInterval += dt;
-        if(timeInterval > 1.9f && bulletNumber > 0){
-            timeInterval -=1.9f;
+        if(timeInterval > 1.9f && bulletNumber > 0 && getY() > 0){
+            timeInterval -= 1.9f;
             bulletNumber--;
             shoot(dt);
         }
+
         if(isCircle) {
-           doCicle(dt);
+            doCicle(dt);
         }
     }
 
@@ -57,7 +58,7 @@ public class EnemyCraft1 extends Enemy implements Pool.Poolable{
         b.setPosition(getX(), getY());
         b.centerAtActor(this);
         b.setDirection(true, 180);
-        b.setAnimation(Resources.getInstance().enemyCraft1Bullet);
+        b.setAnimation(Resources.getInstance().enemyCraft2Bullet);
         b.alive=true;
     }
 
@@ -65,9 +66,9 @@ public class EnemyCraft1 extends Enemy implements Pool.Poolable{
     public void reset() {
         elapsedTime = 0f;
         timeInterval=0f;
-        animation=null;
-        health = 10;
-        alive=true;
+        animation = null;
+        health = 15;
+        alive = false;
         remove();
     }
 }

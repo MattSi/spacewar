@@ -1,7 +1,6 @@
-package org.propig.game.spacewar.unit;
+package org.propig.game.spacewar;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -150,6 +149,14 @@ public class BaseActor extends Group
     public void centerAtActor(BaseActor other)
     {
         centerAtPosition( other.getX() + other.getWidth()/2 , other.getY() + other.getHeight()/2 );
+    }
+
+    public void rightAtActor(BaseActor other){
+        centerAtPosition(other.getX() + other.getWidth(), other.getY() + other.getHeight()/2);
+    }
+
+    public void leftAtActor(BaseActor other){
+        centerAtPosition(other.getX(), other.getY()+other.getHeight()/2);
     }
 
     // ----------------------------------------------

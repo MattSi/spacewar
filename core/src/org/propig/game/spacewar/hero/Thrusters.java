@@ -1,7 +1,7 @@
-package org.propig.game.spacewar.unit;
+package org.propig.game.spacewar.hero;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import org.propig.game.spacewar.unit.BaseActor;
+import org.propig.game.spacewar.BaseActor;
 
 public class Thrusters extends BaseActor {
     public Thrusters(float x, float y, Stage s) {

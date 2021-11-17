@@ -1,7 +1,8 @@
-package org.propig.game.spacewar.unit;
+package org.propig.game.spacewar.hero;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import org.propig.game.spacewar.BaseActor;
 
 public class Laser extends BaseActor {
     public int damage;

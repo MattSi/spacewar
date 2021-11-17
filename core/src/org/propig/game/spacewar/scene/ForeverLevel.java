@@ -2,7 +2,9 @@ package org.propig.game.spacewar.scene;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import org.propig.game.spacewar.unit.*;
+import org.propig.game.spacewar.BaseActor;
+import org.propig.game.spacewar.enemy.*;
+import org.propig.game.spacewar.hero.Supply;
 import org.propig.game.spacewar.utils.EnemyCraft1Pool;
 import org.propig.game.spacewar.utils.EnemyCraft2Pool;
 
@@ -30,7 +32,7 @@ public class ForeverLevel extends BaseActor {
         int level = MathUtils.random(1, 7);
         Stage s = getStage();
 
-        List<BaseActor> list =  BaseActor.getList(s,"org.propig.game.spacewar.unit.Enemy");
+        List<BaseActor> list =  BaseActor.getList(s,"org.propig.game.spacewar.enemy.Enemy");
         if(list!= null  && list.size() > 40){
             return;
         }
@@ -55,10 +57,10 @@ public class ForeverLevel extends BaseActor {
                new EnemyRock(MathUtils.random(1, 500), 800, s);
                 break;
             case 4:
-               new EnemyCraftCircle(0,0, s, Enemy.EnemyKind.EnemyCraft1, 10);
+               new EnemyCraftCircle(0,0, s, Enemy.EnemyKind.EnemyCraft1, 30);
                 break;
             case 5:
-                new EnemyCraftCircle(0,0, s, Enemy.EnemyKind.EnemyCraft2, 10);
+                new EnemyCraftCircle(0,0, s, Enemy.EnemyKind.EnemyCraft2, 30);
 
                 break;
             case 6:

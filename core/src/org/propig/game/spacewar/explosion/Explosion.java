@@ -1,7 +1,8 @@
-package org.propig.game.spacewar.unit;
+package org.propig.game.spacewar.explosion;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Pool.Poolable;
+import org.propig.game.spacewar.BaseActor;
 import org.propig.game.spacewar.utils.ExplosionPool;
 
 public class Explosion extends BaseActor implements Poolable {

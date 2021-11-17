@@ -1,12 +1,11 @@
-package org.propig.game.spacewar.unit;
+package org.propig.game.spacewar.scene;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import org.propig.game.spacewar.unit.BaseActor;
+import org.propig.game.spacewar.BaseActor;
 
-public class Sky extends BaseActor {
+public class Background extends BaseActor {
 
-    public Sky(float x, float y, Stage s) {
+    public Background(float x, float y, Stage s) {
         super(x, y, s);
         loadTexture("spacewar/space.png");
         setSpeed(100);

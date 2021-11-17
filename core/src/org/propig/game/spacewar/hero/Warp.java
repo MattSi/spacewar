@@ -1,9 +1,8 @@
-package org.propig.game.spacewar.unit;
+package org.propig.game.spacewar.hero;
 
-import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import org.propig.game.spacewar.unit.BaseActor;
+import org.propig.game.spacewar.BaseActor;
 
 public class Warp extends BaseActor {
 

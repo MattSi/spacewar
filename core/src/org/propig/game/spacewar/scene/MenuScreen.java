@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import org.propig.game.spacewar.BaseGame;
 import org.propig.game.spacewar.SpaceWarGame;
-import org.propig.game.spacewar.unit.BaseActor;
+import org.propig.game.spacewar.BaseActor;
 
 public class MenuScreen extends BaseScreen{
 

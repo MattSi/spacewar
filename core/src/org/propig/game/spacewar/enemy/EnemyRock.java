@@ -1,8 +1,7 @@
-package org.propig.game.spacewar.unit;
+package org.propig.game.spacewar.enemy;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import org.propig.game.spacewar.utils.EnemyBulletPool;
 
 public class EnemyRock extends Enemy {
 

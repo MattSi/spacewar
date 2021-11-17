@@ -1,4 +1,4 @@
-package org.propig.game.spacewar.unit;
+package org.propig.game.spacewar.hero;
 
 
 public class ThrusterEffect extends ParticleActor {

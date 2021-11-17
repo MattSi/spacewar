@@ -1,11 +1,12 @@
-package org.propig.game.spacewar.unit;
+package org.propig.game.spacewar.hero;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import org.propig.game.spacewar.BaseActor;
 
-public class Supply extends BaseActor{
+public class Supply extends BaseActor {
 
     public SupplyType supplyType;
     public Supply(float x, float y, Stage s, SupplyType supplyType) {

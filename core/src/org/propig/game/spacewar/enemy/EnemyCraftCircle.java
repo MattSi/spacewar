@@ -1,11 +1,12 @@
-package org.propig.game.spacewar.unit;
+package org.propig.game.spacewar.enemy;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import org.propig.game.spacewar.BaseActor;
 import org.propig.game.spacewar.utils.EnemyCraft1Pool;
 import org.propig.game.spacewar.utils.EnemyCraft2Pool;
 
-public class EnemyCraftCircle extends BaseActor{
+public class EnemyCraftCircle extends BaseActor {
     Enemy.EnemyKind  craftKind;
     int craftNumber;
     float timeInterval = 0f;

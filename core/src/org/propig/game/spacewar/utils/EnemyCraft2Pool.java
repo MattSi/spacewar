@@ -2,7 +2,7 @@ package org.propig.game.spacewar.utils;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Pool;
-import org.propig.game.spacewar.unit.EnemyCraft2;
+import org.propig.game.spacewar.enemy.EnemyCraft2;
 
 public class EnemyCraft2Pool extends Pool<EnemyCraft2> {
     private static EnemyCraft2Pool instance;
@@ -35,6 +35,7 @@ public class EnemyCraft2Pool extends Pool<EnemyCraft2> {
         stage.addActor(e);
         e.setVisible(true);
         e.setAnimation(Resources.getInstance().enemyCraft2);
+        e.alive=true;
         return e;
     }
 }

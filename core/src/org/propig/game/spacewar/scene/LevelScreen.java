@@ -4,8 +4,17 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import org.propig.game.spacewar.BaseActor;
 import org.propig.game.spacewar.BaseGame;
-import org.propig.game.spacewar.unit.*;
+import org.propig.game.spacewar.enemy.Enemy;
+import org.propig.game.spacewar.enemy.EnemyBullet;
+import org.propig.game.spacewar.enemy.EnemyCraft1;
+import org.propig.game.spacewar.enemy.EnemyCraft2;
+import org.propig.game.spacewar.explosion.Explosion;
+import org.propig.game.spacewar.hero.Laser;
+import org.propig.game.spacewar.hero.Missile;
+import org.propig.game.spacewar.hero.Spaceship;
+import org.propig.game.spacewar.hero.Supply;
 import org.propig.game.spacewar.gameconst.ScoreConst;
 import org.propig.game.spacewar.utils.EnemyBulletPool;
 import org.propig.game.spacewar.utils.EnemyCraft1Pool;
@@ -21,17 +30,17 @@ public class LevelScreen extends BaseScreen{
     Label bombLabel;
     ForeverLevel foreverLevel;
     ExplosionPool explosionPool;
-    Walker walker;
 
     int bomb;
     int score;
     float shootInterval=0.f;
+    float missileInterval = 0.f;
 
     @Override
     protected void initialize() {
-        new Sky(0,0,mainStage);
-        new Sky(0, 700, mainStage);
-        new Sky(0, 1400, mainStage);
+        new Background(0,0,mainStage);
+        new Background(0, 700, mainStage);
+        new Background(0, 1400, mainStage);
 
         EnemyBulletPool.stage = mainStage;
         EnemyBulletPool.getInstance();
@@ -109,7 +118,15 @@ public class LevelScreen extends BaseScreen{
             }
         }
 
-        for(BaseActor bullet : BaseActor.getList(mainStage, "org.propig.game.spacewar.unit.EnemyBullet")){
+        if(spaceship.lazerPromotion > 4){
+            missileInterval +=delta;
+            if(missileInterval > 1.5f) {
+                spaceship.shootMissile();
+                missileInterval -=1.5f;
+            }
+        }
+
+        for(BaseActor bullet : BaseActor.getList(mainStage, "org.propig.game.spacewar.enemy.EnemyBullet")){
             bullet = (EnemyBullet) bullet;
 
             if(bullet.overlaps(spaceship) && !spaceship.isInvincible()){
@@ -127,7 +144,7 @@ public class LevelScreen extends BaseScreen{
         }
 
 
-        for(BaseActor supply : BaseActor.getList(mainStage, "org.propig.game.spacewar.unit.Supply")){
+        for(BaseActor supply : BaseActor.getList(mainStage, "org.propig.game.spacewar.hero.Supply")){
             supply = (Supply) supply;
             if(supply.overlaps(spaceship) ) {
                 if (((Supply) supply).supplyType == Supply.SupplyType.SUPPLY_Health) {
@@ -142,7 +159,7 @@ public class LevelScreen extends BaseScreen{
         }
 
 
-        for(BaseActor enemy : BaseActor.getList(mainStage,"org.propig.game.spacewar.unit.Enemy")){
+        for(BaseActor enemy : BaseActor.getList(mainStage,"org.propig.game.spacewar.enemy.Enemy")){
             enemy = (Enemy)enemy;
             if(!enemy.alive){
                 tryRecycleCraft((Enemy) enemy);
@@ -160,7 +177,7 @@ public class LevelScreen extends BaseScreen{
                     gameOver = true;
                 }
             }
-            for(BaseActor laserActor : BaseActor.getList(mainStage, "org.propig.game.spacewar.unit.Laser")){
+            for(BaseActor laserActor : BaseActor.getList(mainStage, "org.propig.game.spacewar.hero.Laser")){
                 if(laserActor.overlaps(enemy)){
                     Explosion boom = explosionPool.obtain();
                     boom.centerAtActor(enemy);
@@ -175,12 +192,26 @@ public class LevelScreen extends BaseScreen{
                 }
             }
 
-        }
+            for(BaseActor missileActor : BaseActor.getList(mainStage, "org.propig.game.spacewar.hero.Missile")){
+                if(missileActor.overlaps(enemy)){
+                    Explosion boom = explosionPool.obtain();
+                    boom.centerAtActor(enemy);
+                    boom.setAnimationPaused(false);
 
-        System.out.printf("%5d, %5d, %5d\n",
-                EnemyBulletPool.getInstance().getFree(),
-                EnemyCraft1Pool.getInstance().getFree(),
-                EnemyCraft2Pool.getInstance().getFree());
+                    missileActor.remove();
+                    ((Enemy) enemy).health -= ((Missile)missileActor).damage;
+                    if(((Enemy) enemy).health <=0) {
+                        tryRecycleCraft((Enemy) enemy);
+                        score += ScoreConst.LazerScore;
+                    }
+                }
+            }
+        }
+//
+//        System.out.printf("%5d, %5d, %5d\n",
+//                EnemyBulletPool.getInstance().getFree(),
+//                EnemyCraft1Pool.getInstance().getFree(),
+//                EnemyCraft2Pool.getInstance().getFree());
     }
 
 
@@ -191,6 +222,7 @@ public class LevelScreen extends BaseScreen{
             EnemyCraft2Pool.getInstance().free((EnemyCraft2) craft);
         } else {
             craft.remove();
+            craft.alive=false;
         }
     }
 
@@ -199,25 +231,19 @@ public class LevelScreen extends BaseScreen{
         if(keycode == Input.Keys.X) {
             spaceship.warp();
         }
-        if(keycode == Input.Keys.F) {
-            boolean  walkerVisible = walker.isVisible();
-            walkerVisible = !walkerVisible;
-            walker.setVisible(walkerVisible);
-        }
         if(keycode == Input.Keys.Z) {
-            if(BaseActor.getList(mainStage, "org.propig.game.spacewar.unit.Laser").size() < 10)
+            if(BaseActor.getList(mainStage, "org.propig.game.spacewar.hero.Laser").size() < 10)
                 spaceship.shoot();
         }
         if(keycode == Input.Keys.B){
             if(bomb > 0){
-                for(BaseActor enemy : BaseActor.getList(mainStage,"org.propig.game.spacewar.unit.Enemy")){
-
+                for(BaseActor enemy : BaseActor.getList(mainStage,"org.propig.game.spacewar.enemy.Enemy")){
                     Explosion boom = explosionPool.obtain();
                     boom.centerAtActor(enemy);
                     tryRecycleCraft((Enemy) enemy);
                 }
 
-                for(BaseActor bullet : BaseActor.getList(mainStage, "org.propig.game.spacewar.unit.EnemyBullet")){
+                for(BaseActor bullet : BaseActor.getList(mainStage, "org.propig.game.spacewar.enemy.EnemyBullet")){
                     EnemyBulletPool.getInstance().free((EnemyBullet) bullet);
                 }
                 bomb--;
