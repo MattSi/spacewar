@@ -147,7 +147,7 @@ public class LevelScreen extends BaseScreen implements ControllerListener {
             }
         }
 
-        if(spaceship.lazerPromotion > 0){
+        if(spaceship.lazerPromotion > 4){
             missileInterval +=delta;
             if(missileInterval > 1.5f) {
                 spaceship.shootMissile();
@@ -160,6 +160,10 @@ public class LevelScreen extends BaseScreen implements ControllerListener {
 
             if(bullet.overlaps(spaceship) && !spaceship.isInvincible()){
                 spaceship.shieldPower -= ((EnemyBullet) bullet).damage;
+                if(Controllers.getControllers().size > 0) {
+                    Controller gamepad = Controllers.getControllers().get(0);
+                    gamepad.startVibration(200, 0.5f);
+                }
                 EnemyBulletPool.getInstance().free(((EnemyBullet)bullet));
                 if(spaceship.shieldPower <=0){
                     spaceship.shieldPower = 0;
@@ -167,6 +171,10 @@ public class LevelScreen extends BaseScreen implements ControllerListener {
                     boom.setAnimationPaused(false);
                     boom.centerAtActor(spaceship);
                     spaceship.remove();
+                    if(Controllers.getControllers().size > 0) {
+                        Controller gamepad = Controllers.getControllers().get(0);
+                        gamepad.startVibration(400, 0.7f);
+                    }
                     gameOver = true;
                 }
             }
@@ -196,6 +204,11 @@ public class LevelScreen extends BaseScreen implements ControllerListener {
             }
             if(enemy.overlaps(spaceship) && !spaceship.isInvincible()){
                 spaceship.shieldPower -= ((Enemy)enemy).damage;
+                if(Controllers.getControllers().size > 0) {
+                    Controller gamepad = Controllers.getControllers().get(0);
+                    gamepad.startVibration(400, 0.7f);
+                }
+                tryRecycleCraft((Enemy) enemy);
                 if(spaceship.shieldPower <=0){
                     spaceship.shieldPower = 0;
                     Explosion boom = explosionPool.obtain();
@@ -203,6 +216,10 @@ public class LevelScreen extends BaseScreen implements ControllerListener {
                     boom.setAnimationPaused(false);
 
                     spaceship.remove();
+                    if(Controllers.getControllers().size > 0) {
+                        Controller gamepad = Controllers.getControllers().get(0);
+                        gamepad.startVibration(200, 0.1f);
+                    }
                     gameOver = true;
                 }
             }
