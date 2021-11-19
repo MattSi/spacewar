@@ -13,6 +13,8 @@ public class Resources {
     public Animation<TextureRegion> enemyCraft1 = loadTexture("spacewar/ships/ship_0009.png");
     public Animation<TextureRegion> enemyCraft2 = loadTexture("spacewar/ships/ship_0005.png");
     public Animation<TextureRegion> lazerP = loadTexture("spacewar/tiles/tile_0025.png");
+    public Animation<TextureRegion> laser = loadTexture("spacewar/laser.png");
+    public Animation<TextureRegion> missile =  loadTexture("spacewar/tiles/tile_0012.png");
 
 
 

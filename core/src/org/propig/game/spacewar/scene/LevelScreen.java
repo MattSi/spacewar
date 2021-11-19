@@ -1,5 +1,6 @@
 package org.propig.game.spacewar.scene;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;
@@ -9,6 +10,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import org.propig.game.spacewar.BaseActor;
 import org.propig.game.spacewar.BaseGame;
+import org.propig.game.spacewar.SpaceWarGame;
 import org.propig.game.spacewar.enemy.Enemy;
 import org.propig.game.spacewar.enemy.EnemyBullet;
 import org.propig.game.spacewar.enemy.EnemyCraft1;
@@ -19,11 +21,7 @@ import org.propig.game.spacewar.hero.Missile;
 import org.propig.game.spacewar.hero.Spaceship;
 import org.propig.game.spacewar.hero.Supply;
 import org.propig.game.spacewar.gameconst.ScoreConst;
-import org.propig.game.spacewar.utils.EnemyBulletPool;
-import org.propig.game.spacewar.utils.EnemyCraft1Pool;
-import org.propig.game.spacewar.utils.EnemyCraft2Pool;
-import org.propig.game.spacewar.utils.ExplosionPool;
-
+import org.propig.game.spacewar.utils.*;
 
 
 public class LevelScreen extends BaseScreen implements ControllerListener {
@@ -32,6 +30,7 @@ public class LevelScreen extends BaseScreen implements ControllerListener {
     Label shieldLabel;
     Label scoreLabel;
     Label bombLabel;
+    Label statusLabel;
     ForeverLevel foreverLevel;
     ExplosionPool explosionPool;
 
@@ -61,6 +60,12 @@ public class LevelScreen extends BaseScreen implements ControllerListener {
         EnemyCraft2Pool.stage = mainStage;
         EnemyCraft2Pool.getInstance();
 
+        LaserPool.stage = mainStage;
+        LaserPool.getInstance();
+
+        MissilePool.stage = mainStage;
+        MissilePool.getInstance();
+
 
        // walker = new Walker(300, 400, mainStage);
 
@@ -84,6 +89,9 @@ public class LevelScreen extends BaseScreen implements ControllerListener {
         bombLabel = new Label("" + bomb, BaseGame.labelStyle);
         bombLabel.setColor(Color.CYAN);
 
+        statusLabel = new Label("", BaseGame.debugLabelStyle);
+        statusLabel.setColor(Color.LIGHT_GRAY);
+
         BaseActor shieldIcon = new BaseActor(0,0, uiStage);
         shieldIcon.loadTexture("spacewar/shield-icon.png");
 
@@ -105,7 +113,8 @@ public class LevelScreen extends BaseScreen implements ControllerListener {
         uiTable.add().expandX().expandY();
         uiTable.add(scoreIcon).top();
         uiTable.add(scoreLabel).top();
-
+        uiTable.row();
+        uiTable.add(statusLabel).top();
 
         gameOver = false;
     }
@@ -115,8 +124,18 @@ public class LevelScreen extends BaseScreen implements ControllerListener {
         shieldLabel.setText(""+spaceship.shieldPower);
         scoreLabel.setText(""+score);
         bombLabel.setText(""+bomb);
+        StringBuilder sb = new StringBuilder();
+        sb.append("Java Heap  :" + Gdx.app.getJavaHeap()/1024/1024 + "\n");
+        sb.append("Native Heap:" + Gdx.app.getNativeHeap()/1204/1024 + "\n");
+        sb.append("Bullet: " + EnemyBulletPool.getInstance().getFree() + "\n");
+        sb.append("EnemyCraft1: " + EnemyCraft1Pool.getInstance().getFree() + "\n");
+        sb.append("EnemyCraft2: " + EnemyCraft2Pool.getInstance().getFree() + "\n");
+        sb.append("Laser: " + LaserPool.getInstance().getFree()+"\n");
+        sb.append("Missile: " +MissilePool.getInstance().getFree());
+        statusLabel.setText(sb.toString());
         if(gameOver) {
             foreverLevel.remove();
+            SpaceWarGame.setActiveScreen(new ResultScreen(score));
             return;
         }
 
@@ -128,7 +147,7 @@ public class LevelScreen extends BaseScreen implements ControllerListener {
             }
         }
 
-        if(spaceship.lazerPromotion > 4){
+        if(spaceship.lazerPromotion > 0){
             missileInterval +=delta;
             if(missileInterval > 1.5f) {
                 spaceship.shootMissile();
@@ -193,7 +212,7 @@ public class LevelScreen extends BaseScreen implements ControllerListener {
                     boom.centerAtActor(enemy);
                     boom.setAnimationPaused(false);
 
-                    laserActor.remove();
+                    LaserPool.getInstance().free((Laser) laserActor);
                     ((Enemy) enemy).health -= ((Laser)laserActor).damage;
                     if(((Enemy) enemy).health <=0) {
                         tryRecycleCraft((Enemy) enemy);
@@ -208,7 +227,7 @@ public class LevelScreen extends BaseScreen implements ControllerListener {
                     boom.centerAtActor(enemy);
                     boom.setAnimationPaused(false);
 
-                    missileActor.remove();
+                    MissilePool.getInstance().free((Missile) missileActor);
                     ((Enemy) enemy).health -= ((Missile)missileActor).damage;
                     if(((Enemy) enemy).health <=0) {
                         tryRecycleCraft((Enemy) enemy);
@@ -218,10 +237,7 @@ public class LevelScreen extends BaseScreen implements ControllerListener {
             }
         }
 //
-//        System.out.printf("%5d, %5d, %5d\n",
-//                EnemyBulletPool.getInstance().getFree(),
-//                EnemyCraft1Pool.getInstance().getFree(),
-//                EnemyCraft2Pool.getInstance().getFree());
+
     }
 
 
@@ -241,8 +257,13 @@ public class LevelScreen extends BaseScreen implements ControllerListener {
         if(keycode == Input.Keys.X) {
             spaceship.warp();
         }
+        if(keycode == Input.Keys.D){
+            boolean statusVisible = statusLabel.isVisible();
+            statusVisible = !statusVisible;
+            statusLabel.setVisible(statusVisible);
+        }
         if(keycode == Input.Keys.Z) {
-            if(BaseActor.getList(mainStage, "org.propig.game.spacewar.hero.Laser").size() < 10)
+            if(BaseActor.getList(mainStage, "org.propig.game.spacewar.hero.Laser").size() < 7)
                 spaceship.shoot();
         }
         if(keycode == Input.Keys.B){

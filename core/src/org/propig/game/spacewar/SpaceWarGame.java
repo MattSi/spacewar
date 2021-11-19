@@ -12,7 +12,7 @@ public class SpaceWarGame extends BaseGame{
     public void create() {
         super.create();
 
-        setActiveScreen(new LevelScreen());
+        setActiveScreen(new MenuScreen());
     }
 
     private void loadAssets(){

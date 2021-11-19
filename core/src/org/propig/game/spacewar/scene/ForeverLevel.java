@@ -64,10 +64,10 @@ public class ForeverLevel extends BaseActor {
 
                 break;
             case 6:
-                new Supply(MathUtils.random(1, 500), 800, s, Supply.SupplyType.SUPPLY_Shield);
+                new Supply(MathUtils.random(1, 350), 800, s, Supply.SupplyType.SUPPLY_Shield);
                 break;
             case 7:
-                new Supply(MathUtils.random(1, 500), 800, s, Supply.SupplyType.SUPPLY_LAZERPROMOTION);
+                new Supply(MathUtils.random(1, 350), 800, s, Supply.SupplyType.SUPPLY_LAZERPROMOTION);
                 break;
             default:
                 break;

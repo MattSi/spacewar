@@ -10,6 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import org.propig.game.spacewar.BaseActor;
+import org.propig.game.spacewar.utils.LaserPool;
+import org.propig.game.spacewar.utils.MissilePool;
+import org.propig.game.spacewar.utils.Resources;
 
 public class Spaceship extends BaseActor implements Runnable {
     private Thrusters thrusters;
@@ -52,7 +55,7 @@ public class Spaceship extends BaseActor implements Runnable {
         thrusterEffect.setScale(0.25f);
         addActor(thrusterEffect);
 
-        canWarp = true;
+        canWarp = false;
     }
 
 
@@ -78,32 +81,26 @@ public class Spaceship extends BaseActor implements Runnable {
                 accelerationAtAngle(degree);
             }
 
-            //System.out.printf("%.5f, %.5f, %.5f, %.5f\n",xAxis, yAxis, direction.len(), degree);
-//            if(Float.compare(xAxis, lastxAxis) == 0 && Float.compare(yAxis, lastyAxis) == 0){
-//                ;
-//            } else {
-//
-//            }
             lastxAxis = xAxis;
             lastyAxis = yAxis;
 
+        }
+
+        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+            accelerationAtAngle(180);
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+            accelerationAtAngle(0);
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            accelerationAtAngle(90);
+            thrusterEffect.start();
         } else {
-            if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-                accelerationAtAngle(180);
-            }
-            if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-                accelerationAtAngle(0);
-            }
-            if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
-                accelerationAtAngle(90);
-                thrusterEffect.start();
-            } else {
-                //thrusters.setVisible(false);
-                thrusterEffect.stop();
-            }
-            if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
-                accelerationAtAngle(270);
-            }
+            //thrusters.setVisible(false);
+            thrusterEffect.stop();
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
+            accelerationAtAngle(270);
         }
 
 
@@ -122,7 +119,7 @@ public class Spaceship extends BaseActor implements Runnable {
             return;
         }
 
-        if(canWarp){
+        if(canWarp && shieldPower< 10){
             return;
         }
 
@@ -140,28 +137,31 @@ public class Spaceship extends BaseActor implements Runnable {
         addAction(Actions.after(Actions.repeat(7, pulse)));
         addAction(Actions.after(Actions.run(this)));
 
-
+        shieldPower -= 7;
     }
 
     public void shoot(){
         if(getStage() ==null)
             return;
 
-        Laser laser = new Laser(0,0,getStage());
+        Laser laser = LaserPool.getInstance().obtain();
+        //laser.setAnimation(Resources.getInstance().laser);
         laser.centerAtActor(this);
         laser.setRotation(this.getRotation());
         laser.setMotionAngle(getRotation());
-        laser.damage += lazerPromotion;
 
+        laser.damage += lazerPromotion;
 
     }
 
     public void shootMissile(){
-        Missile missile1 = new Missile(0,0, getStage());
+        Missile missile1;
+        missile1 = MissilePool.getInstance().obtain();
         missile1.leftAtActor(this);
         missile1.setMotionAngle(90);
 
-        Missile missile2 = new Missile(0,0, getStage());
+        Missile missile2;
+        missile2 = MissilePool.getInstance().obtain();
         missile2.rightAtActor(this);
         missile2.setMotionAngle(90);
     }

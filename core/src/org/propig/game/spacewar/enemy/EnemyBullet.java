@@ -15,6 +15,7 @@ public class EnemyBullet extends BaseActor implements Pool.Poolable {
     public EnemyBullet(float x, float y, Stage s) {
         super(x, y, s);
         setScale(1.2f);
+        damage = 11;
     }
 
     public void setDirection(boolean target, float direction){

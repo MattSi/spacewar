@@ -22,6 +22,7 @@ public abstract class BaseGame extends Game {
     private static BaseGame game;
     public static TextButton.TextButtonStyle textButtonStyle;
     public static Label.LabelStyle labelStyle;
+    public static Label.LabelStyle debugLabelStyle;
     protected AssetManager assetManager;
 
 
@@ -43,7 +44,7 @@ public abstract class BaseGame extends Game {
         FreeTypeFontGenerator fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("spacewar/OpenSans.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter fontParameter =
                 new FreeTypeFontGenerator.FreeTypeFontParameter();
-        fontParameter.size = 24;
+        fontParameter.size = 12;
         fontParameter.color = Color.WHITE;
 
         // TODO: fix font and Style;
@@ -60,6 +61,9 @@ public abstract class BaseGame extends Game {
 
         labelStyle = new Label.LabelStyle();
         labelStyle.font = custFont;
+
+        debugLabelStyle = new Label.LabelStyle();
+        debugLabelStyle.font = fontGenerator.generateFont(fontParameter);
 
 
     }

@@ -13,7 +13,7 @@ public class Supply extends BaseActor {
         super(x, y, s);
 
         this.supplyType = supplyType;
-        health = 80;
+        health = 20;
         if(supplyType == SupplyType.SUPPLY_Health){
             loadTexture("spacewar/tiles/tile_0024.png");
         } else if(supplyType == SupplyType.SUPPLY_Shield){

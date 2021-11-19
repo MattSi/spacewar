@@ -5,10 +5,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Pool;
 import org.propig.game.spacewar.BaseActor;
 import org.propig.game.spacewar.enemy.Enemy;
+import org.propig.game.spacewar.utils.MissilePool;
 
-public class Missile extends BaseActor {
+public class Missile extends BaseActor implements Pool.Poolable {
     public float MAX_LIFETIME = 10f;
     Enemy target;
     boolean isTargeted; // 只追踪的一个目标
@@ -16,13 +18,8 @@ public class Missile extends BaseActor {
 
     public Missile(float x, float y, Stage s) {
         super(x, y, s);
-        loadTexture("spacewar/tiles/tile_0012.png");
 
-        addAction(Actions.delay(5f));
-        addAction(Actions.after(Actions.fadeOut(0.2f)));
-        addAction(Actions.after(Actions.removeActor()));
-
-        setSpeed(200);
+        setSpeed(100);
         setAcceleration(600);
         setMaxSpeed(200);
         setDeceleration(0);
@@ -90,9 +87,14 @@ public class Missile extends BaseActor {
                         (ba.getY() > 0 && ba.getY() < getWorldBounds().height));
     }
     public void selfDestruct(){
-        remove();
-        setVisible(false);
+        MissilePool.getInstance().free(this);
     }
 
 
+    @Override
+    public void reset() {
+        elapsedTime = 0f;
+        animation = null;
+        remove();
+    }
 }
