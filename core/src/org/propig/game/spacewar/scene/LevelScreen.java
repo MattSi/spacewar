@@ -125,6 +125,7 @@ public class LevelScreen extends BaseScreen implements ControllerListener {
         scoreLabel.setText(""+score);
         bombLabel.setText(""+bomb);
         StringBuilder sb = new StringBuilder();
+        sb.append("FPS: " + Gdx.graphics.getFramesPerSecond() + "\n");
         sb.append("Java Heap  :" + Gdx.app.getJavaHeap()/1024/1024 + "\n");
         sb.append("Native Heap:" + Gdx.app.getNativeHeap()/1204/1024 + "\n");
         sb.append("Bullet: " + EnemyBulletPool.getInstance().getFree() + "\n");

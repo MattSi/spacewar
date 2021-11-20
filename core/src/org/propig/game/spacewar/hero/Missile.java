@@ -62,7 +62,7 @@ public class Missile extends BaseActor implements Pool.Poolable {
         for(BaseActor enemy : BaseActor.getList(getStage(),"org.propig.game.spacewar.enemy.Enemy")){
             if(!onScreen(enemy)) continue;
             float currentDistance = Vector2.dst(getX(),getY(), enemy.getX(), enemy.getY());
-            if(currentDistance < 500){
+            if(currentDistance < 650){
                 target = (Enemy) enemy;
                 targetRange.add(enemy);
             }
