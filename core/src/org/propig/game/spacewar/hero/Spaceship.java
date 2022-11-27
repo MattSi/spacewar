@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
@@ -32,10 +33,11 @@ public class Spaceship extends BaseActor implements Runnable {
         setBoundaryPolygon(8);
 
         setAcceleration(1000);
-        setMaxSpeed(300);
+        setMaxSpeed(500);
         setDeceleration(1000);
         setRotation(90);
         setScale(0.5f);
+        setColor(Color.YELLOW);
         health = 50;
         maxHealth = 100;
 
