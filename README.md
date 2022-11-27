@@ -3,3 +3,6 @@
 2. Based on Actor/Stage technique
 3. Steering
 4. Force feedback 
+
+
+![Screenshot](img/screenshot.png)
